@@ -40,11 +40,15 @@ public class CountryController {
         return name +"was added";
     }
 
+    //När vi deletar ett land kommer vi även att deleta huvudstaden
     @GetMapping(path="/delete")
     public String deleteCountry(@RequestParam String name){
-        countryRepository.deleteByName(name);
+        Country c = countryRepository.findByName(name);
+        countryRepository.delete(c);
         return name +" was deleted ";
     }
+
+
 
     @GetMapping(path="/all")
     public Iterable<Country> getAllCountries(){

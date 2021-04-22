@@ -1,6 +1,13 @@
 package com.example.demo.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.hibernate.annotations.*;
+
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import java.util.List;
 
 @Entity
 public class Country {
@@ -14,8 +21,22 @@ public class Country {
 
     //@JoinColumn(name="capitalId", referencedColumnName="id")   //går att ta bort
     @JoinColumn
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)  //popagerar ALLA operationer
+
+    //när ett land skapas skapas också huvudstaden i db
+    //när ett land tas bort ligger huvudstaden kvar i db
+    //@OneToOne(cascade = CascadeType.PERSIST)
+    //tvärt om
+    //@OneToOne(cascade = CascadeType.REMOVE)
     private Capital capital;
+
+    @OneToMany(mappedBy="country", fetch=FetchType.LAZY)
+   // @LazyToOne(LazyToOneOption.NO_PROXY)
+   // @LazyGroup("child")
+    //@Fetch(FetchMode.SUBSELECT)
+    @JsonManagedReference
+    private List<Child> children;
+
 
     public Country() { }
 
@@ -46,5 +67,13 @@ public class Country {
 
     public void setCapital(Capital capital) {
         this.capital = capital;
+    }
+
+    public List<Child> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<Child> children) {
+        this.children = children;
     }
 }

@@ -8,4 +8,5 @@ public interface CountryRepository extends CrudRepository<Country, Long> {
 
     Country findByName(String s);
     void deleteByName(String s);
+
 }
