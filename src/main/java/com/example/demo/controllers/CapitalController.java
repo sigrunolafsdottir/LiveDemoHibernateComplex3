@@ -25,7 +25,13 @@ public class CapitalController {
         capitalRepository.save(c);
         log.info("A capital has been added "+name);
         log.debug("Debugging add Capitals");
-        return name +"was added";
+        return name +" was added";
+    }
+
+    @GetMapping(path="/getById")
+    public Capital getById(@RequestParam long id){
+
+       return capitalRepository.findById(id).get();
     }
 
     @GetMapping(path="/all")
